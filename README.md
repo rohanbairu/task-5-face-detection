@@ -1,1 +1,3 @@
-# task-5-face-detection
+TASK 1
+CHATBOT WITH RULE-BASED RESPONSES
+
