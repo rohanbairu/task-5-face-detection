@@ -1,0 +1,38 @@
+import org.opencv.core.*;
+import org.opencv.imgcodecs.Imgcodecs;
+import org.opencv.imgproc.Imgproc;
+import org.opencv.objdetect.CascadeClassifier;
+
+public class VisionFaceScanner {
+
+    public static void main(String[] args) {
+
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+
+        CascadeClassifier detector = new CascadeClassifier("haarcascade_frontalface_default.xml");
+
+        Mat img = Imgcodecs.imread("input.jpg");
+
+        if (img.empty()) {
+            System.out.println("Image not found!");
+            return;
+        }
+
+        MatOfRect boxes = new MatOfRect();
+        detector.detectMultiScale(img, boxes);
+
+        for (Rect r : boxes.toArray()) {
+            Imgproc.rectangle(
+                img,
+                new Point(r.x, r.y),
+                new Point(r.x + r.width, r.y + r.height),
+                new Scalar(50, 255, 50),
+                3
+            );
+        }
+
+        Imgcodecs.imwrite("output.jpg", img);
+
+        System.out.println("Faces detected: " + boxes.toArray().length);
+    }
+}
